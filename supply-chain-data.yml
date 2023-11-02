@@ -1,0 +1,43 @@
+materials:
+  - copper
+  
+processes:
+  - 
+    
+products:
+  product1:
+    mass: 10
+    quantity: 4
+    processes:
+    supplier: supplier1
+  
+  product2:
+    mass:
+    quantity:
+    processes:
+    supplier: supplier2
+  
+  product3:
+    mass:
+    quantity:
+    processes:
+    supplier: supplier3
+
+suppliers:
+  supplier1:
+    location: 1
+    country-code: GB
+    resources:
+      - product2
+   
+  supplier2:
+    location: 1700
+    country-code: CN
+    resources:
+      - product3
+   
+  supplier3:
+    location: 1900
+    country-code: CN
+    resources:
+      - copper
