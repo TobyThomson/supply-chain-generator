@@ -7,22 +7,26 @@
 # [x] Add material nodes
 # [x] Add changes to layout engine
 # [x] Get arrowheads working nicely
-# [x] Get distance calculation (in terms of tree parsing) working
+# [x] Get distance_km calculation (in terms of tree parsing) working
 # [x] Add co2 passing on
 # [x] Total Product CO2e calculation
 # [x] Add emoji showing transport medium
 # [x] Transport CO2e calculation (first pass)
-
+# [x] Add realistic location 
 # [ ] Fix the transport calculations so it can handle multiple (product) rescources heading to a supplier
 # [ ] Add mass consideration to transport calculations
+
 # [ ] Add processess CO2e calculation
 
 import yaml
 import graphviz
 import flag
-import math
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
 
 Datafile = "supply-chain-data.yml"
+
+Geolocator = Nominatim(user_agent="supply-chain-generator-app")
 
 Graph = graphviz.Digraph("supply-chain-diagram", filename="supply-chain-diagram.gv")
 Graph.engine="dot"
@@ -92,22 +96,23 @@ def GenerateProductNode(data, startingNode, pointer, cumulativeCO2e):
     
     Graph.edge(data["products"][pointer]["supplier"], pointer, arrowhead=arrowhead)
 
-def GenerateSupplierNode(data, pointer, distance, transportMethod):
-    flagEmoji = flag.flag(data["suppliers"][pointer]["country-code"])
+def GenerateSupplierNode(data, pointer, distance_km, transportMethod):
+    countryCode = Geolocator.geocode(data["suppliers"][pointer]["address"], addressdetails=True).raw["address"]["country_code"]
+
+    flagEmoji = flag.flag(countryCode)
     processString = "N/A" #"{}".format("<BR/>".join(data["suppliers"][pointer]["processes"]))
     label = SupplierLabelTemplate.format(pointer, flagEmoji, processString)
     
     Graph.node(pointer, label=label, fontname=Font)
 
-    # TODO: Change this so it's not using the same distance for each resocurce coming into the supplier!
     for resource in data["suppliers"][pointer]["resources"]:
-        if distance > 0.1:
-            Graph.edge(resource, pointer, label=("%.f km (%s)" % (distance, transportMethod)), fontname=Font)
+        if distance_km > 0.1:
+            Graph.edge(resource, pointer, label=("%.f km (%s)" % (distance_km, transportMethod)), fontname=Font)
 
         else:
             Graph.edge(resource, pointer, fontname=Font)
 
-def CalculateTransitEmissions(distance, mass):
+def CalculateTransitEmissions(distance_km, mass):
     # We assume that any trip that would involve driving for longer than nine hours, as this would complicate logistics, would be taken by air instead (https://www.bluedropservices.co.uk/guides/353/how-long-can-lorry-drivers-drive-for/)
     # We assume average driving speed for heavy good vehicle on the motorway is 60 mph = 97 km/h (https://www.statista.com/statistics/303443/average-speed-on-different-roads-in-great-britain-by-vehicle-type/)
     # Therefore, we assume that the threshold that where air freight becomes preferable over trucking is 9 * 97 = 873 km
@@ -116,15 +121,15 @@ def CalculateTransitEmissions(distance, mass):
     transportMethod = ""
     transport_kgCO2e = 0
     
-    if distance < 873:
+    if distance_km < 873:
         # Using trucking emissions factor (in kg CO2e/km/kg of mass transported from here: https://www.co2everything.com/co2e-of/freight-road-truck)
         transportMethod = "🚛"
-        transport_kgCO2e = distance * mass * 0.000105
+        transport_kgCO2e = distance_km * mass * 0.000105
 
     else:
         # Using air freight emissions factor (in kg CO2e/km/kg of mass transported from here: https://www.co2everything.com/co2e-of/freight-air)
         transportMethod = "✈"
-        transport_kgCO2e = distance * mass * 0.00221
+        transport_kgCO2e = distance_km * mass * 0.00221
     
     return transport_kgCO2e, transportMethod
 
@@ -147,17 +152,28 @@ def SearchTree(data, startingNode, pointer, pointerType, resourceSupplier=None, 
                 (resourceSupplier, cumulative_kgCO2e) = SearchTree(data, startingNode, resource, "product")
 
         transportMethod = ""
-        distance = 0
+        distance_km = 0
         
         if resourceSupplier:
-            distance = math.fabs(float(data["suppliers"][pointer]["location"]) - (data["suppliers"][resourceSupplier]["location"]))
-            # TODO: Use product mass!
-            (transit_kgCO2e, transportMethod) = CalculateTransitEmissions(distance, 1)
+            supplier0Location = Geolocator.geocode(data["suppliers"][pointer]["address"])
+            supplier1Location = Geolocator.geocode(data["suppliers"][resourceSupplier]["address"])
+
+            if not supplier0Location:
+                print("CANNOT RESOLVE ADDRESS %s FOR SUPPLIER %s. BROADEN ADDRESS TO FIX" % (data["suppliers"][pointer]["address"], pointer))
+                exit()
+            
+            if not supplier1Location:
+                print("CANNOT RESOLVE ADDRESS %s FOR SUPPLIER %s. BROADEN ADDRESS TO FIX" % (data["suppliers"][resourceSupplier]["address"], resourceSupplier))
+                exit()
+
+            distance_km = geodesic((supplier0Location.latitude, supplier0Location.longitude), (supplier1Location.latitude, supplier1Location.longitude)).kilometers
+            
+            (transit_kgCO2e, transportMethod) = CalculateTransitEmissions(distance_km, 1)
             cumulative_kgCO2e = float(cumulative_kgCO2e or 0) + transit_kgCO2e
         
         resourceSupplier = pointer
         
-        GenerateSupplierNode(data, pointer, distance, transportMethod)
+        GenerateSupplierNode(data, pointer, distance_km, transportMethod)
 
     return resourceSupplier, cumulative_kgCO2e
 

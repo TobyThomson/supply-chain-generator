@@ -25,19 +25,16 @@ products:
 
 suppliers:
   supplier1:
-    location: 1
-    country-code: GB
+    address: 518104, Shenzhen, China
     resources:
       - product2
    
   supplier2:
-    location: 1700
-    country-code: CN
+    address: Woodhouse, Leeds LS2 9JT
     resources:
       - product3
    
   supplier3:
-    location: 1900
-    country-code: CN
+    address: Leeds, LS6 2DU
     resources:
       - copper
