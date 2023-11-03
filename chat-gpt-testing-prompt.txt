@@ -1,0 +1,34 @@
+
+Below is an snippet from an yaml file describing a plausible supply chain for the iPhone X:
+
+materials:
+  - #e.g. "Copper"
+    
+products:
+  iPhone X:
+    mass_g: 174 # Mass in grams
+    quantity: 1 # How many are required
+    supplier: Hon Hai Precision Industry Co., Ltd., # The supplier responsible for producing this product
+  
+  Display:
+    mass_g: 35
+    quantity: 1
+    supplier: DisplayTek Co., Ltd.,
+
+suppliers:
+  Hon Hai Precision Industry Co., Ltd.,:
+    address: 123 Street, China
+    resources:
+      - Display
+  
+  DisplayTek Co., Ltd.,:
+    address: 45 Industrial Estate, UK
+    resources:
+      - #e.g. "Glass"
+
+In the same format (with "materials", "products" and "suppliers"), generate a plausible yaml file for the supply chain.
+
+Rules:
+  1. Suppliers may not use their own products as resources!
+  2. Products may only have one supplier. Suppliers may use multiple products and or materials as their resources.
+  3. All resources used by suppliers must be defined first as either products or materials
