@@ -1,6 +1,30 @@
 digraph "supply-chain-diagram" {
 	node [shape=plain]
-	copper [label=<<TABLE
+	graph [ranksep=1]
+	graph [splines=true]
+	Foxconn [label=<<TABLE
+    ALIGN="CENTER"
+    BORDER="0"
+    CELLBORDER="1"
+    CELLSPACING="0"
+    BGCOLOR="white">
+
+    <TR>
+        <TD><B>Foxconn</B> 🇹🇼</TD>
+    </TR>
+</TABLE>> fontname="Segoe UI Emoji"]
+	"Samsung Display" [label=<<TABLE
+    ALIGN="CENTER"
+    BORDER="0"
+    CELLBORDER="1"
+    CELLSPACING="0"
+    BGCOLOR="white">
+
+    <TR>
+        <TD><B>Samsung Display</B> 🇰🇷</TD>
+    </TR>
+</TABLE>> fontname="Segoe UI Emoji"]
+	Glass [label=<<TABLE
     ALIGN="CENTER"
     BORDER="0"
     CELLBORDER="1"
@@ -8,58 +32,23 @@ digraph "supply-chain-diagram" {
     BGCOLOR="coral2">
 
     <TR>
-        <TD><B>copper</B></TD>
+        <TD><B>Glass</B></TD>
     </TR>
 </TABLE>> fontname="Segoe UI Emoji"]
-	supplier3 [label=<<TABLE
+	Glass -> "Samsung Display" [fontname="Segoe UI Emoji"]
+	Plastic [label=<<TABLE
     ALIGN="CENTER"
     BORDER="0"
     CELLBORDER="1"
     CELLSPACING="0"
-    BGCOLOR="white">
+    BGCOLOR="coral2">
 
     <TR>
-        <TD><B>supplier3</B> 🇨🇳</TD>
-    </TR>
-
-    <TR>
-        <TD>N/A</TD>
+        <TD><B>Plastic</B></TD>
     </TR>
 </TABLE>> fontname="Segoe UI Emoji"]
-	copper -> supplier3 [fontname="Segoe UI Emoji"]
-	product3 [label=<<TABLE
-    ALIGN="CENTER"
-    BORDER="0"
-    CELLBORDER="1"
-    CELLSPACING="0"
-    BGCOLOR="cadetblue2">
-
-    <TR>
-        <TD><B>product3</B></TD> <TD>None</TD> <TD>None</TD>
-    </TR>
-
-    <TR>
-        <TD COLSPAN="3">None kg CO2e</TD>
-    </TR>
-</TABLE>> fontname="Segoe UI Emoji"]
-	supplier3 -> product3 [arrowhead=none]
-	supplier2 [label=<<TABLE
-    ALIGN="CENTER"
-    BORDER="0"
-    CELLBORDER="1"
-    CELLSPACING="0"
-    BGCOLOR="white">
-
-    <TR>
-        <TD><B>supplier2</B> 🇨🇳</TD>
-    </TR>
-
-    <TR>
-        <TD>N/A</TD>
-    </TR>
-</TABLE>> fontname="Segoe UI Emoji"]
-	product3 -> supplier2 [label="200 km (🚛)" fontname="Segoe UI Emoji"]
-	product2 [label=<<TABLE
+	Plastic -> "Samsung Display" [fontname="Segoe UI Emoji"]
+	"OLED Display" [label=<<TABLE
     ALIGN="CENTER"
     BORDER="0"
     CELLBORDER="1"
@@ -67,15 +56,16 @@ digraph "supply-chain-diagram" {
     BGCOLOR="cadetblue2">
 
     <TR>
-        <TD><B>product2</B></TD> <TD>None</TD> <TD>None</TD>
+        <TD><B>OLED Display</B></TD> <TD>35</TD> <TD>1</TD>
     </TR>
 
     <TR>
-        <TD COLSPAN="3">0.021 kg CO2e</TD>
+        <TD COLSPAN="3">0.0000 kg CO2e</TD>
     </TR>
 </TABLE>> fontname="Segoe UI Emoji"]
-	supplier2 -> product2 [arrowhead=none]
-	supplier1 [label=<<TABLE
+	"Samsung Display" -> "OLED Display" [arrowhead=none]
+	"OLED Display" -> Foxconn [label="1588 km (✈)" fontname="Segoe UI Emoji"]
+	"LG Chem" [label=<<TABLE
     ALIGN="CENTER"
     BORDER="0"
     CELLBORDER="1"
@@ -83,15 +73,22 @@ digraph "supply-chain-diagram" {
     BGCOLOR="white">
 
     <TR>
-        <TD><B>supplier1</B> 🇬🇧</TD>
-    </TR>
-
-    <TR>
-        <TD>N/A</TD>
+        <TD><B>LG Chem</B> 🇰🇷</TD>
     </TR>
 </TABLE>> fontname="Segoe UI Emoji"]
-	product2 -> supplier1 [label="1699 km (✈)" fontname="Segoe UI Emoji"]
-	product1 [label=<<TABLE
+	Lithium [label=<<TABLE
+    ALIGN="CENTER"
+    BORDER="0"
+    CELLBORDER="1"
+    CELLSPACING="0"
+    BGCOLOR="coral2">
+
+    <TR>
+        <TD><B>Lithium</B></TD>
+    </TR>
+</TABLE>> fontname="Segoe UI Emoji"]
+	Lithium -> "LG Chem" [fontname="Segoe UI Emoji"]
+	Battery [label=<<TABLE
     ALIGN="CENTER"
     BORDER="0"
     CELLBORDER="1"
@@ -99,12 +96,29 @@ digraph "supply-chain-diagram" {
     BGCOLOR="cadetblue2">
 
     <TR>
-        <TD><B>product1</B></TD> <TD>10</TD> <TD>4</TD>
+        <TD><B>Battery</B></TD> <TD>45</TD> <TD>1</TD>
     </TR>
 
     <TR>
-        <TD COLSPAN="3">3.77579 kg CO2e</TD>
+        <TD COLSPAN="3">0.0000 kg CO2e</TD>
     </TR>
 </TABLE>> fontname="Segoe UI Emoji"]
-	supplier1 -> product1 [arrowhead=normal]
+	"LG Chem" -> Battery [arrowhead=none]
+	Battery -> Foxconn [label="1656 km (✈)" fontname="Segoe UI Emoji"]
+	"iPhone X" [label=<<TABLE
+    ALIGN="CENTER"
+    BORDER="0"
+    CELLBORDER="1"
+    CELLSPACING="0"
+    BGCOLOR="cadetblue2">
+
+    <TR>
+        <TD><B>iPhone X</B></TD> <TD>164</TD> <TD>1</TD>
+    </TR>
+
+    <TR>
+        <TD COLSPAN="3">0.1647 kg CO2e</TD>
+    </TR>
+</TABLE>> fontname="Segoe UI Emoji"]
+	Foxconn -> "iPhone X" [arrowhead=normal]
 }
