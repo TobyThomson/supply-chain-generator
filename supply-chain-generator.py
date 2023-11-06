@@ -97,15 +97,15 @@ def GenerateSupplierEdge(supplier, resource, distance_km=None, transportMethod=N
         Graph.edge(resource, supplier, label=("%.f km (%s)" % (distance_km, transportMethod)), fontname=Font)
 
 def CalculateTransitEmissions(distance_km, mass_g):
-    # We assume that any trip that would involve driving for longer than nine hours, as this would complicate logistics, would be taken by air instead (https://www.bluedropservices.co.uk/guides/353/how-long-can-lorry-drivers-drive-for/)
+    # We assume that any trip that would involve driving for longer two nine hour days, as this would complicate logistics, would be taken by air instead (https://www.bluedropservices.co.uk/guides/353/how-long-can-lorry-drivers-drive-for/)
     # We assume average driving speed for heavy good vehicle on the motorway is 60 mph = 97 km/h (https://www.statista.com/statistics/303443/average-speed-on-different-roads-in-great-britain-by-vehicle-type/)
-    # Therefore, we assume that the threshold that where air freight becomes preferable over trucking is 9 * 97 = 1843 km
+    # Therefore, we assume that the threshold that where air freight becomes preferable over trucking is 18 * 97 = 2425 km
     # NOTE: This is an extremly crude method!
 
     transportMethod = ""
     transport_kgCO2e = 0
     
-    if distance_km < 1843:
+    if distance_km < 2425:
         # Using trucking emissions factor (in kg CO2e/km/g of mass transported from here: https://www.co2everything.com/co2e-of/freight-road-truck)
         transportMethod = "🚛"
         transport_kgCO2e = distance_km * mass_g * 0.000000105
