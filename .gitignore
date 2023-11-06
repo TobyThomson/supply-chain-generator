@@ -1,3 +1,6 @@
 *.pdf
 *.svg
 *.gv
+*.jpg
+*.pdf
+.vscode/

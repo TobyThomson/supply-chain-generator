@@ -1,48 +1,63 @@
 materials:
-  - Bauxite # Aluminium
-  - Sand # Glass
-  - Petalite # Lithium
-  - Chalcopyrite # Copper
-  - Silica # Silicon
-  - Corundum # Sapphire
-  - Calaverite # Gold
-  - Tantalite # Tungsten
-  - Cassiterite # Tin
+  # Aluminium
+  - Bauxite
+
+  # Glass
+  - Sand
+
+  # Lithium
+  - Petalite
+
+  # Copper
+  - Chalcopyrite
+
+  # Silicon
+  - Silica
+
+  # Sapphire
+  - Corundum
+
+  # Gold
+  - Calaverite
+
+  # Tungsten
+  - Tantalite
+
+  # Tin
+  - Cassiterite
+
+  # Chlorine
+  - Halite
+
   - Fossil Fuels
   - Water
-  - Halite # Chlorine
   - Glass Fiber Cloth
   - Resin
   - Solvent
 
 products:
   iPhone X:
-    mass_g: 174
+    mass_g: 164
     quantity: 1
     supplier: Foxconn Technology Group
-    
-  Backbone:
-    mass_g: 25
-    quantity: 1
-    supplier: Tata Group
     
   Plastic Framing and Brackets:
     mass_g: 3
     quantity: 1
     supplier: Apple
     
-  Chassis:
+  iPhone Casing:
     mass_g: 20
     quantity: 1
     supplier: Apple
     
   Taptic Engine:
-    mass_g: 3
+    mass_g: 5
     quantity: 1
     supplier: Apple
     
   Microphone:
-    mass_g: 1.8
+    mass_g: 2
     quantity: 1
     supplier: LG
     
@@ -57,67 +72,67 @@ products:
     supplier: LG
     
   Earpeice Speaker:
-    mass_g: 4.1
+    mass_g: 5
     quantity: 1
     supplier: Apple
     
-  Loudspeaker:
-    mass_g: 3.8
+  LoudSpeaker:
+    mass_g: 5
     quantity: 1
     supplier: LG
     
   Touchscreen Controller:
-    mass_g: 1.3
+    mass_g: 1
     quantity: 1
     supplier: Broadcom Inc
     
   Lightning Connector:
-    mass_g: 2.2
+    mass_g: 5
     quantity: 1
     supplier: Apple
     
   Gorilla Glass:
-    mass_g: 8.3
+    mass_g: 10
     quantity: 1
     supplier: Corning Inc
 
   Display Module:
-    mass_g: 33.5
+    mass_g: 35
     quantity: 1
     supplier: Samsung Display
 
   Rear Camera Module:
-    mass_g: 8.5
+    mass_g: 10
     quantity: 1
     supplier: Sony Corporation
   
   Front Camera Module:
-    mass_g: 6.4
+    mass_g: 10
     quantity: 1
     supplier: Sony Corporation
     
   IR Flood Illuminator:
-    mass_g: 3.5
+    mass_g: 3
     quantity: 2
     supplier: Sharp Corporation
     
   Front-Facing Camera:
-    mass_g: 3.6
+    mass_g: 3
     quantity: 1
     supplier: Sharp Corporation
     
   Rear-Camera:
-    mass_g: 3.1
+    mass_g: 3
     quantity: 2
     supplier: Sharp Corporation
     
   IR Dot Projector:
-    mass_g: 2.6
+    mass_g: 2
     quantity: 1
     supplier: Sharp Corporation
     
   IR Camera:
-    mass_g: 3.8
+    mass_g: 3
     quantity: 1
     supplier: Sharp Corporation
     
@@ -127,82 +142,82 @@ products:
     supplier: LG Chem
   
   PCB:
-    mass_g: 6
+    mass_g: 10
     quantity: 2
     supplier: Wistron Corporation
     
   Main Logic Board:
-    mass_g: 9
+    mass_g: 50
     quantity: 1
     supplier: Pegatron
     
   Daughter Logic Board:
-    mass_g: 9
+    mass_g: 40
     quantity: 1
     supplier: Pegatron
   
   A11 Bionic Chip:
-    mass_g: 3.5
+    mass_g: 3
     quantity: 1
     supplier: TSMC
     
   Power Management IC:
-    mass_g: 0.9
+    mass_g: 1
     quantity: 3
     supplier: Qualcomm
     
   Battery Charger:
-    mass_g: 2.1
+    mass_g: 2
     quantity: 1
     supplier: Texas Instruments
     
   Semiconductor:
-    mass_g: 0 #1.4
+    mass_g: 1
     quantity: 1
     supplier: NXP Semiconductors
     
   Audio Codec:
-    mass_g: 2.1
+    mass_g: 1
     quantity: 1
     supplier: AAC Technologies
     
   Audio Amplifier:
-    mass_g: 1.7
+    mass_g: 1
     quantity: 2
     supplier: Cirrus Logic
     
   Wifi/Bluetooth Module:
-    mass_g: 1.9
+    mass_g: 1
     quantity: 1
     supplier: Murata Manufacturing
     
   Controller Module:
-    mass_g: 1.3
+    mass_g: 1
     quantity: 1
     supplier: NXP Semiconductors
     
   Gigabit LTE Transceiver:
-    mass_g: 1.1
+    mass_g: 1
     quantity: 1
     supplier: Qualcomm
     
   LTE Modem:
-    mass_g: 0.8
+    mass_g: 1
     quantity: 1
     supplier: Qualcomm  
     
   Wireless Charging Controller:
-    mass_g: 1.8
+    mass_g: 1
     quantity: 1
     supplier: Broadcom Inc
     
   Power Amplifier:
-    mass_g: 2
+    mass_g: 1
     quantity: 2
     supplier: Broadcom Inc
     
   Flash Memory:
-    mass_g: 1.5
+    mass_g: 1
     quantity: 1
     supplier: Toshiba
     
@@ -212,118 +227,118 @@ products:
     supplier: Bosch
     
   Accelerometer:
-    mass_g: 1.3
+    mass_g: 1
     quantity: 1
     supplier: Bosch
     
   USB Type-C Port Controller:
-    mass_g: 0.5
+    mass_g: 3
     quantity: 1
     supplier: Cypress
     
   DC-DC Converter:
-    mass_g: 0.5
+    mass_g: 1
     quantity: 2
     supplier: Texas Instruments
     
   MEMS Oscillator:
-    mass_g: 0.7
+    mass_g: 1
     quantity: 1
     supplier: SiTime
     
   Aluminium:
-    mass_g: 0 #58
-    quantity: 1
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: China Hongqiao Group
     
   Glass:
-    mass_g: 0 #39
-    quantity: 1
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: Corning Inc
     
   Lithium:
-    mass_g: 0.3
-    quantity: 1 
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: LG Chem
     
   Copper:
-    mass_g: 1.3
-    quantity: 1
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: Codelco
     
   Plastic:
-    mass_g: 0 #10
-    quantity: 1 
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: Dow Chemicals
     
   Silicon:
-    mass_g: 0 #4.2
-    quantity: 1
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: Siltronic
     
   Sapphire:
-    mass_g: 0.5
-    quantity: 1
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: GT Advanced Technologies
     
   Gold:
-    mass_g: 0 #2.5
-    quantity: 1
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: Valcambi
     
   Tungsten:
-    mass_g: 0.4
-    quantity: 1
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: AMG Brasil
     
   Tin:
-    mass_g: 1.3
-    quantity: 1
+    mass_g: 1 # update
+    quantity: 1 # update
     supplier: Resind Industria e Comercio Ltda
     
   Chlorine:
-    mass_g: 0.5
+    mass_g: 1
     quantity: 1
     supplier: Minsheng Group
     
   Hydrogen:
-    mass_g: 0.7
+    mass_g: 1
     quantity: 1
     supplier: Hydrogen Cummins
     
   Hydrochloric Acid:
-    mass_g: 0.5
+    mass_g: 1
     quantity: 1
     supplier: Chlorination Plant
     
   Solder Mask:
-    mass_g: 0.3
+    mass_g: 1
     quantity: 1
     supplier: Dongguan City Electronic Materials Co Ltd
     
   Prepreg and Core:
-    mass_g: 2.3
+    mass_g: 3
     quantity: 1
     supplier: JLC PCB
     
   Copper Foil:
-    mass_g: 0.3
+    mass_g: 1
     quantity: 1
     supplier: Kingboard Copper Foil Ltd
     
   Solder Paste:
-    mass_g: 0.4
+    mass_g: 1
     quantity: 1
     supplier: Aibo Technology Co Ltd
     
   Photo Resist:
-    mass_g: 2.1
+    mass_g: 1
     quantity: 1
     supplier: JLC PCB
 
 suppliers:
   Foxconn Technology Group:
-    address: New Taipei, Taiwan
+    address: Taiwan
     resources:
       - Battery
       - Display Module
@@ -335,11 +350,13 @@ suppliers:
       - Earpeice Speaker
       - Lightning Connector
       - Tin
+      - Plastic Framing and Brackets
+      - iPhone Casing
       - Taptic Engine
       - Touchscreen Controller
       
   Wistron Corporation:
-    address: Bengaluru, India
+    address: India
     resources:
       - Copper
       - Gold
@@ -350,9 +367,14 @@ suppliers:
       - Copper Foil
       - Solder Paste
       - Photo Resist
+  
+  LG: # TODO: Fix!
+    address: China
+    resources:
+      - Copper
 
   Pegatron:
-    address: Chennai, India
+    address: India
     resources:
       - PCB
       - MEMS Oscillator
@@ -376,113 +398,102 @@ suppliers:
       - Tin
 
   TSMC:
-    high-impact:
-    address: Hsinchu Science Park, Taiwan
+    address: Taiwan
     resources:
       - Silicon
       - Gold
       - Tungsten
 
   Samsung Display:
-    high-impact:
-    address: Yongin, South Korea
+    address: South Korea
     resources:
       - Glass
       - Plastic
       - IR Flood Illuminator
       - Ambient Light Sensor
       - Microphone
-      - Loudspeaker
+      - LoudSpeaker
       - Proximity Sensor
       
   Qualcomm:
-    high-impact:
     address: California, United States
     resources:
       - Silicon
       
   Texas Instruments:
-    high-impact:
     address: Maine, Texas
     resources:
       - Silicon
       
   NXP Semiconductors:
-    high-impact:
     address: Okayama, Japan
     resources:
       - Silicon
        
   AAC Technologies:
-    high-impact:
-    address: Shenzhen, China
+    address: China
     resources:
       - Silicon
        
   Murata Manufacturing:
-    high-impact:
-    address: Kyoto, Japan
+    address: Japan
     resources:
       - Silicon
       
   Broadcom Inc:
-    high-impact:
-    address: Yishun, Singapore
+    address: Singapore
     resources:
       - Silicon
       
   Cirrus Logic:
-    high-impact:
-    address: Taipei, Taiwan
+    address: Taiwan
     resources:
       - Silicon
       
   Toshiba:
-    high-impact:
     address: Yokkaichi, Japan
     resources:
       - Silicon
       
   Bosch:
-    address: Gunzenhausen, Germany
+    address: Germany
     resources:
       - Copper
       - Aluminium
       - Gold
       
   Cypress:
-    high-impact:
-    address: Ahmedabad, India
+    address: India
     resources:
       - Silicon
       
   SiTime:
-    high-impact:
-    address: Taoyuan City, Taiwan
+    address: Taiwan
     resources:
       - Silicon
       
   Sharp Corporation:
-    address: Changshu, China
+    address: China
     resources:
       - Gorilla Glass
       - Gold
       - Sapphire
+      # TODO: Resolve these
+      #- IR Flood Illuminator
+      #- IR Camera
+      #- IR Dot Projector
+      #- Front-Facing Camera
+      #- LoudSpeaker
       
   Sony Corporation:
-    address: Pathumthani, Thailand
+    address: Thailand
     resources:
       - Gorilla Glass
       - Gold
       - Sapphire
-      - IR Flood Illuminator
-      - IR Camera
-      - IR Dot Projector
-      - Front-Facing Camera
-      - Loudspeaker
       
   Apple:
-    address: Maharashtra, India
+    address: India
     resources:
       - Gold
       - Copper
@@ -491,23 +502,16 @@ suppliers:
       - Tungsten
       - Tin
       - Plastic
-      
-  Tata Group:
-    address: Mumbai, India
-    resources:
-      - Plastic Framing and Brackets
-      - Plastic
-      - Chassis
 
   Corning Inc:
-    address: Suzano, Brazil
+    address: Brazil
     resources:
       - Sand
       - Aluminium
       - Silicon
       
   China Hongqiao Group:
-    address: Shandong, China
+    address: China
     resources:
       - Bauxite
       
@@ -516,58 +520,43 @@ suppliers:
     resources:
       - Petalite
       
-  LG:
-    address: Tennessee, United States
-    resources:
-      - Copper
-      - Gorilla Glass
-      - Aluminium
-      
   Dow Chemicals:
-    high-impact:
     address: Texas, United States
     resources:
       - Fossil Fuels
       
   GT Advanced Technologies:
-    high-impact:
     address: Arizona, United States
     resources:
       - Corundum
       
   Codelco:
-    high-impact:
     address: Chuquicamata, Chile
     resources:
       - Chalcopyrite
       
   Siltronic:
-    high-impact:
-    address: Tampines Wafer Fab Park, Singapore
+    address: Singapore
     resources:
       - Silica
 
   Valcambi:
-    high-impact:
     address: Balerna, Switzerland
     resources:
       - Calaverite
       
   Resind Industria e Comercio Ltda:
-    high-impact:
     address: Belo Horizonte, Brazil
     resources:
       - Cassiterite
       
   AMG Brasil:
-    high-impact:
     address: Belo Horizonte, Brazil
     resources:
       - Tantalite
       
   Minsheng Group:
-    high-impact:
-    address: Zhejiang, China
+    address: China
     resources:
       - Halite
       
@@ -577,13 +566,13 @@ suppliers:
       - Fossil Fuels
       
   Chlorination Plant:
-    address: Tianjin, China
+    address: China
     resources:
       - Hydrogen
       - Chlorine
        
   Dongguan City Electronic Materials Co Ltd:
-    address: Dongguan City, China
+    address: China
     resources:
       - Tin
       
@@ -593,15 +582,15 @@ suppliers:
       - Glass Fiber Cloth
       - Tin
       - Resin
-      
+
   Kingboard Copper Foil Ltd:
-    address: Fogang, China
+    address: China
     resources:
       - Tin
       - Copper
  
   Aibo Technology Co Ltd:
-    address: Shenzhen, China
+    address: China
     resources:
       - Aluminium
       - Resin

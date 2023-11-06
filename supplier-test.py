@@ -3,18 +3,20 @@ import graphviz
 import flag
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
-import random
+from time import sleep
 
 Datafile = "supply-chain-data.yml"
 
+StartingNode = "iPhone X"
+
 Geolocator = Nominatim(user_agent="supply-chain-generator-app")
 
-Graph = graphviz.Digraph("supply-chain-diagram", filename="supply-chain-diagram.gv")
+Graph = graphviz.Digraph("supply-chain-diagram", filename="supply-chain-diagram.gv", strict="None")
 Graph.engine="dot"
 Graph.format = "svg"
 
 Graph.attr("node", shape="plain")
-Graph.attr("graph", ranksep="1")
+Graph.attr("graph", rankdir="LR")
 Graph.attr("graph", splines="true")
 
 Font = "Segoe UI Emoji"
@@ -24,7 +26,7 @@ MaterialLabelTemplate = """<<TABLE
     BORDER="0"
     CELLBORDER="1"
     CELLSPACING="0"
-    BGCOLOR="coral2">
+    BGCOLOR="darkkhaki">
 
     <TR>
         <TD><B>{}</B></TD>
@@ -39,11 +41,11 @@ ProductLabelTemplate = """<<TABLE
     BGCOLOR="cadetblue2">
 
     <TR>
-        <TD><B>{}</B></TD> <TD>{}</TD> <TD>{}</TD>
+        <TD><B>{}</B></TD> <TD>Mass: {} g</TD> <TD>Qty.: {}</TD>
     </TR>
 
     <TR>
-        <TD COLSPAN="3">{:.4f} kg CO2e</TD>
+        <TD COLSPAN="3">{:.2f} kg CO2e</TD>
     </TR>
 </TABLE>>"""
 
@@ -56,6 +58,10 @@ SupplierLabelTemplate = """<<TABLE
 
     <TR>
         <TD><B>{}</B> {}</TD>
+    </TR>
+
+    <TR>
+        <TD>Enviromental Impact: {}</TD>
     </TR>
 </TABLE>>"""
 
@@ -77,12 +83,9 @@ def GenerateProductNode(data, startingProduct, product, cumulative_kgCO2e):
     Graph.edge(data["products"][product]["supplier"], product, arrowhead=arrowhead)
 
 def GenerateSupplierNode(data, supplier):
-    countryCode = Geolocator.geocode(data["suppliers"][supplier]["address"], addressdetails=True).raw["address"]["country_code"]
-
-    flagEmoji = flag.flag(countryCode)
-    # Uncomment the below when it comes time to add the process emissions stuff back in
-    #processString = "{}".format("<BR/>".join(data["suppliers"][pointer]["processes"]))
-    label = SupplierLabelTemplate.format(supplier, flagEmoji) #, processString)
+    flagEmoji = flag.flag(data["suppliers"][supplier]["country-code"])
+    impactFlag = "🔴" if "high-impact" in data["suppliers"][supplier] else "🟢"
+    label = SupplierLabelTemplate.format(supplier, flagEmoji, impactFlag)
     
     Graph.node(supplier, label=label, fontname=Font)
 
@@ -96,13 +99,13 @@ def GenerateSupplierEdge(supplier, resource, distance_km=None, transportMethod=N
 def CalculateTransitEmissions(distance_km, mass_g):
     # We assume that any trip that would involve driving for longer than nine hours, as this would complicate logistics, would be taken by air instead (https://www.bluedropservices.co.uk/guides/353/how-long-can-lorry-drivers-drive-for/)
     # We assume average driving speed for heavy good vehicle on the motorway is 60 mph = 97 km/h (https://www.statista.com/statistics/303443/average-speed-on-different-roads-in-great-britain-by-vehicle-type/)
-    # Therefore, we assume that the threshold that where air freight becomes preferable over trucking is 9 * 97 = 873 km
+    # Therefore, we assume that the threshold that where air freight becomes preferable over trucking is 9 * 97 = 1843 km
     # NOTE: This is an extremly crude method!
 
     transportMethod = ""
     transport_kgCO2e = 0
     
-    if distance_km < 873:
+    if distance_km < 1843:
         # Using trucking emissions factor (in kg CO2e/km/g of mass transported from here: https://www.co2everything.com/co2e-of/freight-road-truck)
         transportMethod = "🚛"
         transport_kgCO2e = distance_km * mass_g * 0.000000105
@@ -114,7 +117,7 @@ def CalculateTransitEmissions(distance_km, mass_g):
     
     return transport_kgCO2e, transportMethod
 
-def SearchTree(data, startingNode, pointer, pointerType, resourceSupplier=None, cumulative_kgCO2e=None):
+def SearchTree(data, startingNode, pointer, pointerType, resourceSupplier=None, cumulative_kgCO2e=0):
     if pointerType == "material":
         GenerateMaterialNode(data, pointer)
     
@@ -129,30 +132,22 @@ def SearchTree(data, startingNode, pointer, pointerType, resourceSupplier=None, 
         for resource in data["suppliers"][pointer]["resources"]:
             try:
                 materialIndex = data["materials"].index(resource)
-                (resourceSupplier, cumulative_kgCO2e) = SearchTree(data, startingNode, data["materials"][materialIndex], "material")
+                (resourceSupplier, partialCumulative_kgCO2e) = SearchTree(data, startingNode, data["materials"][materialIndex], "material")
 
-            except ValueError:
-                (resourceSupplier, cumulative_kgCO2e) = SearchTree(data, startingNode, resource, "product")
+            except:
+                (resourceSupplier, partialCumulative_kgCO2e) = SearchTree(data, startingNode, resource, "product")
             
             if resourceSupplier:
-                supplier0Location = Geolocator.geocode(data["suppliers"][pointer]["address"])
-                supplier1Location = Geolocator.geocode(data["suppliers"][resourceSupplier]["address"])
+                location0 = (data["suppliers"][pointer]["latitude"], data["suppliers"][pointer]["longitude"])
+                location1 = (data["suppliers"][resourceSupplier]["latitude"], data["suppliers"][resourceSupplier]["longitude"])
 
-                if not supplier0Location:
-                    print("CANNOT RESOLVE ADDRESS %s FOR SUPPLIER %s. BROADEN ADDRESS TO FIX" % (data["suppliers"][pointer]["address"], pointer))
-                    exit()
-                
-                if not supplier1Location:
-                    print("CANNOT RESOLVE ADDRESS %s FOR SUPPLIER %s. BROADEN ADDRESS TO FIX" % (data["suppliers"][resourceSupplier]["address"], resourceSupplier))
-                    exit()
-
-                distance_km = geodesic((supplier0Location.latitude, supplier0Location.longitude), (supplier1Location.latitude, supplier1Location.longitude)).kilometers
+                distance_km = geodesic(location0, location1).kilometers
 
                 # NOTE: The following assumes the resource is a product and not a material.
                 #       I think we get away with it because "resourceSupplier" should be
                 #       "None" if the resource was a material (and thus none of this is called)
                 (transit_kgCO2e, transportMethod) = CalculateTransitEmissions(distance_km, data["products"][resource]["mass_g"])
-                cumulative_kgCO2e = float(cumulative_kgCO2e or 0) + transit_kgCO2e
+                cumulative_kgCO2e += float(partialCumulative_kgCO2e or 0) + transit_kgCO2e
 
                 GenerateSupplierEdge(pointer, resource, distance_km, transportMethod)
             
@@ -167,8 +162,20 @@ def main():
     with open(Datafile, "r") as file:
         data = yaml.safe_load(file)
 
-        startingNode = "iPhone X"
-        SearchTree(data, startingNode, startingNode, "product")
+        for supplier in data["suppliers"]:
+            location = Geolocator.geocode(data["suppliers"][supplier]["address"], addressdetails=True)
+
+            if not location:
+                print("CANNOT RESOLVE ADDRESS %s FOR SUPPLIER %s. BROADEN ADDRESS TO FIX" % (data["suppliers"][supplier]["address"], supplier))
+                exit()
+
+            data["suppliers"][supplier]["latitude"] = location.latitude
+            data["suppliers"][supplier]["longitude"] = location.longitude
+            data["suppliers"][supplier]["country-code"] = location.raw["address"]["country_code"]
+
+            print("SUPPLIER: %s\nCOUNTRY CODE: %s\n" % (supplier, data["suppliers"][supplier]["country-code"]))
+
+        SearchTree(data, StartingNode, StartingNode, "product")
         
     Graph.view()
 
